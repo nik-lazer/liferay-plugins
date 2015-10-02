@@ -163,6 +163,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws IOException, PortletException {
 
+		_log.debug("processAction");
 		try {
 			doProcessAction(actionRequest, actionResponse);
 		}
@@ -182,6 +183,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			EventRequest eventRequest, EventResponse eventResponse)
 		throws IOException, PortletException {
 
+		_log.debug("processEvent");
 		try {
 			doProcessEvent(eventRequest, eventResponse);
 		}
@@ -201,6 +203,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
+		_log.debug("processRender");
 		try {
 			doRender(renderRequest, renderResponse);
 		}
@@ -220,6 +223,8 @@ public class ConsumerPortlet extends GenericPortlet {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws IOException, PortletException {
 
+		_log.debug("serveResource");
+
 		try {
 			doServeResource(resourceRequest, resourceResponse);
 		}
@@ -237,6 +242,7 @@ public class ConsumerPortlet extends GenericPortlet {
 	protected void addFormField(
 		List<NamedString> formParameters, String name, String[] values) {
 
+		_log.debug("addFormField");
 		for (String value : values) {
 			NamedString formParameter = new NamedString();
 
@@ -251,6 +257,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
+		_log.debug("authorize");
 		HttpServletRequest request = PortalUtil.getHttpServletRequest(
 			resourceRequest);
 		HttpServletResponse response = PortalUtil.getHttpServletResponse(
@@ -294,6 +301,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
+		_log.debug("doProcessAction");
 		WSRPConsumerPortlet wsrpConsumerPortlet = getWSRPConsumerPortlet();
 
 		WSRPConsumer wsrpConsumer =
@@ -343,7 +351,7 @@ public class ConsumerPortlet extends GenericPortlet {
 	protected void doProcessEvent(
 			EventRequest eventRequest, EventResponse eventResponse)
 		throws Exception {
-
+		_log.debug("doProcessEvent");
 		WSRPConsumerPortlet wsrpConsumerPortlet = getWSRPConsumerPortlet();
 
 		WSRPConsumer wsrpConsumer =
@@ -392,6 +400,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws Exception {
 
+		_log.debug("doRender");
 		PortletSession portletSession = renderRequest.getPortletSession();
 
 		MarkupContext markupContext =
@@ -414,6 +423,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
+		_log.debug("doServeResource");
 		if (PortletPropsValues.SECURE_RESOURCE_URLS_ENABLED) {
 			if (!authorize(resourceRequest, resourceResponse)) {
 				return;
@@ -443,6 +453,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			PortletRequest portletRequest, String wsrpAuth)
 		throws Exception {
 
+		_log.debug("encodeWSRPAuth");
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
@@ -510,6 +521,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
+		_log.debug("getMarkupResponse");
 		PortletSession portletSession = portletRequest.getPortletSession();
 
 		WSRPConsumerPortlet wsrpConsumerPortlet = getWSRPConsumerPortlet();
@@ -683,6 +695,7 @@ public class ConsumerPortlet extends GenericPortlet {
 	}
 
 	protected PortletMode getPortletMode(String portletMode) {
+		_log.debug("getPortletMode");
 		return new PortletMode(portletMode.substring(5));
 	}
 
@@ -725,6 +738,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
+		_log.debug("getResource");
 		PortletSession portletSession = resourceRequest.getPortletSession();
 
 		WSRPConsumerPortlet wsrpConsumerPortlet = getWSRPConsumerPortlet();
@@ -784,6 +798,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			WSRPConsumerManager wsrpConsumerManager, WSRPConsumer wsrpConsumer)
 		throws Exception {
 
+		_log.debug("getServiceHolder");
 		PortletSession portletSession = portletRequest.getPortletSession();
 
 		String markupServiceKey = getSessionKey(
@@ -987,6 +1002,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			UserContext userContext)
 		throws Exception {
 
+		_log.debug("initContextsAction");
 		HttpServletRequest request = PortalUtil.getHttpServletRequest(
 			actionRequest);
 
@@ -1024,6 +1040,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			RuntimeContext runtimeContext, UserContext userContext)
 		throws Exception {
 
+		_log.debug("eventContextsAction");
 		initContexts(
 			eventRequest, eventResponse, wsrpConsumer, wsrpConsumerPortlet,
 			wsrpConsumerManager, markupParams, portletContext, runtimeContext,
@@ -1046,6 +1063,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			UserContext userContext)
 		throws Exception {
 
+		_log.debug("portletContextsAction");
 		PortletSession portletSession = portletRequest.getPortletSession();
 
 		HttpServletRequest request = PortalUtil.getHttpServletRequest(
@@ -1258,6 +1276,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			RuntimeContext runtimeContext, UserContext userContext)
 		throws Exception {
 
+		_log.debug("initContextsResource");
 		HttpServletRequest request = PortalUtil.getHttpServletRequest(
 			resourceRequest);
 
@@ -1301,6 +1320,7 @@ public class ConsumerPortlet extends GenericPortlet {
 	}
 
 	protected boolean isReservedParameter(String name) {
+		_log.debug("param = " + name);
 		if (name.startsWith("wsrp-")) {
 			return true;
 		}
@@ -1443,6 +1463,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			MimeResponse mimeResponse)
 		throws Exception {
 
+		_log.debug("processMimeResponse");
 		String contentType = GetterUtil.get(
 			mimeResponse.getMimeType(), ContentTypes.TEXT_HTML_UTF8);
 
@@ -1622,6 +1643,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			oasis.names.tc.wsrp.v2.types.ResourceResponse wsrpResourceResponse)
 		throws Exception {
 
+		_log.debug("processResourceResponse");
 		PortletSession portletSession = resourceRequest.getPortletSession();
 
 		PortletContext portletContext =
@@ -1673,8 +1695,17 @@ public class ConsumerPortlet extends GenericPortlet {
 					resourceResponse.setProperty(
 						HttpHeaders.CONTENT_DISPOSITION, value);
 
-					break;
+					continue;
 				}
+				if (StringUtil.equalsIgnoreCase(
+						name, "ZK-SID")) {
+
+					resourceResponse.setProperty(
+							"ZK-SID", value);
+
+					continue;
+				}
+
 			}
 		}
 
@@ -1688,6 +1719,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			ServiceHolder serviceHolder, UpdateResponse updateResponse)
 		throws Exception {
 
+		_log.debug("processUpdateResponse");
 		PortletSession portletSession = portletRequest.getPortletSession();
 
 		if (updateResponse == null) {
@@ -1771,6 +1803,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			String url)
 		throws Exception {
 
+		_log.debug("proxyURL=" + url);
 		PortletSession portletSession = resourceRequest.getPortletSession();
 
 		WSRPConsumerPortlet wsrpConsumerPortlet = getWSRPConsumerPortlet();
@@ -1839,6 +1872,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			Map<String, String> parameterMap)
 		throws Exception {
 
+		_log.debug("rewriteURL");
 		LiferayPortletResponse liferayPortletResponse =
 			(LiferayPortletResponse)portletResponse;
 
@@ -1934,6 +1968,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			String content)
 		throws Exception {
 
+		_log.debug("rewriteURLs");
 		Matcher rewriteMatcher = _rewritePattern.matcher(content);
 
 		StringBuffer sb = new StringBuffer();
@@ -2005,6 +2040,7 @@ public class ConsumerPortlet extends GenericPortlet {
 			Map<String, String> parameterMap)
 		throws Exception {
 
+		_log.debug("secureResourceURL");
 		HttpServletRequest request = PortalUtil.getHttpServletRequest(
 			portletRequest);
 

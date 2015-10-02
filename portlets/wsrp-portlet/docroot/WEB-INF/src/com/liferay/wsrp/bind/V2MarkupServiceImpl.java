@@ -336,6 +336,17 @@ public class V2MarkupServiceImpl
 			clientAttributes.add(clientAttribute);
 		}
 
+		String zkSid = response.getHeader("ZK-SID");
+
+		if (Validator.isNotNull(zkSid)) {
+			NamedString clientAttribute = new NamedString();
+
+			clientAttribute.setName("ZK-SID");
+			clientAttribute.setValue(zkSid);
+
+			clientAttributes.add(clientAttribute);
+		}
+
 		if (Validator.isNotNull(contentType)) {
 			resourceContext.setMimeType(contentType);
 
