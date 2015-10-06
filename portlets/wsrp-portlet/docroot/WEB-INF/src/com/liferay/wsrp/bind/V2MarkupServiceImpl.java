@@ -52,11 +52,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.liferay.wsrp.util.WsrpUtils;
 import oasis.names.tc.wsrp.v2.intf.WSRP_v2_Markup_PortType;
 import oasis.names.tc.wsrp.v2.types.BlockingInteractionResponse;
 import oasis.names.tc.wsrp.v2.types.ClientData;
@@ -336,15 +338,18 @@ public class V2MarkupServiceImpl
 			clientAttributes.add(clientAttribute);
 		}
 
-		String zkSid = response.getHeader("ZK-SID");
+		Set<String> forwardHeadersSet = WsrpUtils.getWsrpHeadersForForwarding();
+		for (String headerName: forwardHeadersSet) {
+			String headerValue = response.getHeader(headerName);
 
-		if (Validator.isNotNull(zkSid)) {
-			NamedString clientAttribute = new NamedString();
+			if (Validator.isNotNull(headerValue)) {
+				NamedString clientAttribute = new NamedString();
 
-			clientAttribute.setName("ZK-SID");
-			clientAttribute.setValue(zkSid);
+				clientAttribute.setName(headerName);
+				clientAttribute.setValue(headerValue);
 
-			clientAttributes.add(clientAttribute);
+				clientAttributes.add(clientAttribute);
+			}
 		}
 
 		if (Validator.isNotNull(contentType)) {

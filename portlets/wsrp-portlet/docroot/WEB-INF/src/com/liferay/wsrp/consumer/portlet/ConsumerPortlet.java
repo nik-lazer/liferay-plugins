@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -71,6 +72,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -78,6 +80,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -104,6 +108,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.xml.namespace.QName;
 
+import com.liferay.wsrp.util.WsrpUtils;
 import oasis.names.tc.wsrp.v2.intf.WSRP_v2_Markup_PortType;
 import oasis.names.tc.wsrp.v2.types.BlockingInteractionResponse;
 import oasis.names.tc.wsrp.v2.types.CacheControl;
@@ -1684,6 +1689,7 @@ public class ConsumerPortlet extends GenericPortlet {
 
 		NamedString[] clientAttributes = resourceContext.getClientAttributes();
 
+		Set<String> forwardHeadersSet = WsrpUtils.getWsrpHeadersForForwarding();
 		if (clientAttributes != null) {
 			for (NamedString clientAttribute : clientAttributes) {
 				String name = clientAttribute.getName();
@@ -1697,12 +1703,8 @@ public class ConsumerPortlet extends GenericPortlet {
 
 					continue;
 				}
-				if (StringUtil.equalsIgnoreCase(
-						name, "ZK-SID")) {
-
-					resourceResponse.setProperty(
-							"ZK-SID", value);
-
+				if (WsrpUtils.containsIgnoreCase(forwardHeadersSet, name)) {
+					resourceResponse.setProperty(name, value);
 					continue;
 				}
 
