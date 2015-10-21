@@ -12,5 +12,6 @@
 
 	<dependencies defaultconf="default">
 		<dependency name="wss4j" org="org.apache.ws.security" rev="1.5.12" />
+		<dependency org="org.apache.commons" name="commons-lang3" rev="3.4"/>
 	</dependencies>
 </ivy-module>

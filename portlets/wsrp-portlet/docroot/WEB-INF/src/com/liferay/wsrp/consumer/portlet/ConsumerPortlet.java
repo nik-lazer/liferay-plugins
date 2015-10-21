@@ -154,6 +154,7 @@ import oasis.names.tc.wsrp.v2.types.UserContext;
 import oasis.names.tc.wsrp.v2.types.UserProfile;
 
 import org.apache.axis.message.MessageElement;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * @author Brian Wing Shun Chan
@@ -1988,6 +1989,7 @@ public class ConsumerPortlet extends GenericPortlet {
 					sb, portletResponse.getNamespace());
 			}
 			else if (Validator.isNotNull(url)) {
+				url = StringEscapeUtils.unescapeJson(url);
 				Matcher parameterMatcher = _parameterPattern.matcher(url);
 
 				while (parameterMatcher.find()) {
