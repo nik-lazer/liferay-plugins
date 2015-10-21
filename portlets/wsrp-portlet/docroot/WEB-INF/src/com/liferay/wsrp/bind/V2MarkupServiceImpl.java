@@ -602,7 +602,6 @@ public class V2MarkupServiceImpl
 			String opaqueValue = navigationalContext.getOpaqueValue();
 
 			if (Validator.isNotNull(opaqueValue)) {
-				opaqueValue = fixOpaqueValue(opaqueValue);
 				opaqueValue = new String(
 					Base64.decode(Base64.fromURLSafe(opaqueValue)),
 					StringPool.UTF8);
@@ -779,7 +778,6 @@ public class V2MarkupServiceImpl
 		if (Validator.isNotNull(opaqueValue)) {
 			sb.append(StringPool.AMPERSAND);
 
-			opaqueValue = fixOpaqueValue(opaqueValue);
 			opaqueValue = new String(
 				Base64.decode(Base64.fromURLSafe(opaqueValue)),
 				StringPool.UTF8);
@@ -894,18 +892,6 @@ public class V2MarkupServiceImpl
 				charSet);
 		}
 	}
-
-	private String fixOpaqueValue(String opaqueValue) {
-		String ret = opaqueValue;
-		if (Validator.isNotNull(opaqueValue)) {
-			if (opaqueValue.length() % 2 != 0) {
-			//if (opaqueValue.endsWith("\\")) {
-				ret = opaqueValue.substring(0, opaqueValue.length() - 1);
-			}
-		}
-		return ret;
-	}
-
 
 	private static final String _PATH_WIDGET = "/widget/c/portal/layout";
 
