@@ -1581,7 +1581,7 @@ public class ConsumerPortlet extends GenericPortlet {
 				sb.append("name=");
 				sb.append(name);
 				sb.append("; filename=");
-				sb.append(uploadPortletRequest.getFileName(name));
+				sb.append(HttpUtil.encodeURL(uploadPortletRequest.getFileName(name)));
 
 				NamedString mimeAttribute = new NamedString();
 
